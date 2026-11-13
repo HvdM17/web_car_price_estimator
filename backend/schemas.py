@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from config import BRANDS, FUEL_TYPES, SELLER_TYPES, TRANSMISSION_TYPES
 
@@ -44,6 +44,8 @@ class CarInput(BaseModel):
 
 
 class PredictionOutput(BaseModel):
+    model_config = ConfigDict(protected_namespaces=())
+
     predicted_price: int
     currency: str = "INR"
     range_low: int
@@ -53,6 +55,8 @@ class PredictionOutput(BaseModel):
 
 
 class HealthOutput(BaseModel):
+    model_config = ConfigDict(protected_namespaces=())
+
     status: str
     model_loaded: bool
     model_version: str | None = None

@@ -21,6 +21,10 @@ async def lifespan(app: FastAPI):
         state["pipeline"] = joblib.load(MODEL_PATH)
         state["meta"] = json.loads(META_PATH.read_text(encoding="utf-8"))
         logger.info("Model dimuat: %s", MODEL_PATH.name)
+    except FileNotFoundError:
+        state["pipeline"] = None
+        state["meta"] = None
+        logger.warning("Model belum tersedia: %s", MODEL_PATH.name)
     except Exception:
         # Server tetap jalan. /health akan melaporkan model_loaded: false.
         state["pipeline"] = None
