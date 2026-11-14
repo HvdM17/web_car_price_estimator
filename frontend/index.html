@@ -1,0 +1,647 @@
+
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Car Price Estimator</title>
+
+    <meta name="description"
+        content="Car Price Estimator - Sistem estimasi harga mobil bekas berbasis Machine Learning.">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <a href="#home" class="logo">
+            Car<span>Price.</span>
+        </a>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#estimator">Estimator</a>
+            <a href="#about">About</a>
+        </nav>
+
+    </header>
+
+
+    <main>
+
+        <!-- ================= HERO SECTION ================= -->
+
+        <section class="hero" id="home">
+
+            <div class="hero-content">
+
+                <span class="tagline">
+                    SMART CAR PRICE ESTIMATOR
+                </span>
+
+                <h1>
+                    Find Your Car's
+                    <br>
+                    <span>Right Value.</span>
+                </h1>
+
+                <p>
+                    Temukan estimasi harga mobil bekas dengan mudah
+                    berdasarkan spesifikasi dan kondisi kendaraan.
+                    Dapatkan gambaran nilai kendaraan melalui
+                    teknologi Machine Learning.
+                </p>
+
+                <a href="#estimator" class="btn-primary">
+                    Start Estimating →
+                </a>
+
+                <div class="hero-features">
+
+                    <div class="feature-item">
+                        <span>✦</span>
+                        Smart Prediction
+                    </div>
+
+                    <div class="feature-item">
+                        <span>✦</span>
+                        Easy to Use
+                    </div>
+
+                    <div class="feature-item">
+                        <span>✦</span>
+                        Data Driven
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ANIMATED CAR -->
+
+            <div class="hero-visual">
+
+                <!-- Floating Decorations -->
+
+                <div class="floating-circle circle-one"></div>
+                <div class="floating-circle circle-two"></div>
+                <div class="floating-circle circle-three"></div>
+
+
+                <!-- Information Card -->
+
+                <div class="floating-card card-top">
+
+                    <span class="card-icon">✨</span>
+
+                    <div>
+                        
+                        <small>Smart Prediction</small>
+                    </div>
+
+                </div>
+
+
+                <!-- Car Scene -->
+
+                <div class="car-scene">
+
+                    <div class="car">
+
+                        <!-- Car Roof -->
+
+                        <div class="car-roof">
+
+                            <div class="car-window"></div>
+
+                        </div>
+
+
+                        <!-- Car Body -->
+
+                        <div class="car-body">
+
+                            <div class="car-light"></div>
+
+                        </div>
+
+
+                        <!-- Wheels -->
+
+                        <div class="wheel wheel-left">
+                            <div class="wheel-center"></div>
+                        </div>
+
+                        <div class="wheel wheel-right">
+                            <div class="wheel-center"></div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Road -->
+
+                    <div class="road">
+                        <div class="road-line"></div>
+                    </div>
+
+                </div>
+
+
+                <!-- Second Information Card -->
+
+                <div class="floating-card card-bottom">
+
+                    <span class="card-icon">📊</span>
+
+                    <div>
+                        <strong>Price Analysis</strong>
+                        <small>Data-driven estimate</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= ESTIMATOR SECTION ================= -->
+
+        <section class="estimator" id="estimator">
+
+            <div class="section-heading">
+
+                <span class="tagline">
+                    PRICE PREDICTION
+                </span>
+
+                <h2>Vehicle Information</h2>
+
+                <p>
+                    Lengkapi informasi kendaraan untuk mendapatkan
+                    estimasi harga mobil bekas.
+                </p>
+
+            </div>
+
+
+            <div class="form-card">
+
+                <form id="prediction-form">
+
+                    <div class="form-grid">
+
+
+                        <!-- BRAND -->
+
+                        <div class="form-group">
+
+                            <label for="brand">
+                                Car Brand
+                            </label>
+
+                            <input
+                                type="text"
+                                id="brand"
+                                name="brand"
+                                placeholder="Contoh: Toyota"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- REGISTRATION YEAR -->
+
+                        <div class="form-group">
+
+                            <label for="registration_year">
+                                Registration Year
+                            </label>
+
+                            <input
+                                type="number"
+                                id="registration_year"
+                                name="registration_year"
+                                placeholder="Contoh: 2020"
+                                min="1990"
+                                max="2026"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- FUEL TYPE -->
+
+                        <div class="form-group">
+
+                            <label for="fuel_type">
+                                Fuel Type
+                            </label>
+
+                            <select
+                                id="fuel_type"
+                                name="fuel_type"
+                                required
+                            >
+
+                                <option value="">
+                                    Pilih bahan bakar
+                                </option>
+
+                                <option value="Petrol">
+                                    Petrol
+                                </option>
+
+                                <option value="Diesel">
+                                    Diesel
+                                </option>
+
+                                <option value="CNG">
+                                    CNG
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- TRANSMISSION -->
+
+                        <div class="form-group">
+
+                            <label for="transmission">
+                                Transmission
+                            </label>
+
+                            <select
+                                id="transmission"
+                                name="transmission"
+                                required
+                            >
+
+                                <option value="">
+                                    Pilih transmisi
+                                </option>
+
+                                <option value="Manual">
+                                    Manual
+                                </option>
+
+                                <option value="Automatic">
+                                    Automatic
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- KILOMETERS -->
+
+                        <div class="form-group">
+
+                            <label for="kms_driven">
+                                Kilometers Driven
+                            </label>
+
+                            <input
+                                type="number"
+                                id="kms_driven"
+                                name="kms_driven"
+                                placeholder="Contoh: 25000"
+                                min="0"
+                                max="500000"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- SEATS -->
+
+                        <div class="form-group">
+
+                            <label for="seats">
+                                Number of Seats
+                            </label>
+
+                            <input
+                                type="number"
+                                id="seats"
+                                name="seats"
+                                placeholder="Contoh: 5"
+                                min="2"
+                                max="10"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- OWNERSHIP -->
+
+                        <div class="form-group">
+
+                            <label for="ownsership">
+                                Ownership
+                            </label>
+
+                            <select
+                                id="ownsership"
+                                name="ownsership"
+                                required
+                            >
+
+                                <option value="">
+                                    Pilih kepemilikan
+                                </option>
+
+                                <option value="First Owner">
+                                    First Owner
+                                </option>
+
+                                <option value="Second Owner">
+                                    Second Owner
+                                </option>
+
+                                <option value="Third Owner">
+                                    Third Owner
+                                </option>
+
+                                <option value="Fourth Owner">
+                                    Fourth Owner
+                                </option>
+
+                                <option value="Fifth Owner">
+                                    Fifth Owner
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- MANUFACTURING YEAR -->
+
+                        <div class="form-group">
+
+                            <label for="manufacturing_year">
+                                Manufacturing Year
+                            </label>
+
+                            <input
+                                type="number"
+                                id="manufacturing_year"
+                                name="manufacturing_year"
+                                placeholder="Contoh: 2019"
+                                min="1990"
+                                max="2026"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- INSURANCE -->
+
+                        <div class="form-group">
+
+                            <label for="insurance_validity">
+                                Insurance Validity
+                            </label>
+
+                            <select
+                                id="insurance_validity"
+                                name="insurance_validity"
+                                required
+                            >
+
+                                <option value="">
+                                    Pilih asuransi
+                                </option>
+
+                                <option value="Comprehensive">
+                                    Comprehensive
+                                </option>
+
+                                <option value="Third Party insurance">
+                                    Third Party insurance
+                                </option>
+
+                                <option value="Third Party">
+                                    Third Party
+                                </option>
+
+                                <option value="Zero Dep">
+                                    Zero Dep
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- MILEAGE -->
+
+                        <div class="form-group">
+
+                            <label for="mileage">
+                                Mileage (km/l)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="mileage"
+                                name="mileage"
+                                placeholder="Contoh: 18"
+                                min="3"
+                                max="50"
+                                step="0.1"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- ENGINE -->
+
+                        <div class="form-group">
+
+                            <label for="engine">
+                                Engine Capacity (cc)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="engine"
+                                name="engine"
+                                placeholder="Contoh: 1500"
+                                min="500"
+                                max="8000"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- MAX POWER -->
+
+                        <div class="form-group">
+
+                            <label for="max_power">
+                                Max Power (bhp)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="max_power"
+                                name="max_power"
+                                placeholder="Contoh: 100"
+                                min="20"
+                                max="1000"
+                                step="0.1"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- TORQUE -->
+
+                        <div class="form-group">
+
+                            <label for="torque">
+                                Torque (Nm)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="torque"
+                                name="torque"
+                                placeholder="Contoh: 150"
+                                min="30"
+                                max="3000"
+                                step="0.1"
+                                required
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- SUBMIT BUTTON -->
+
+                    <button
+                        type="submit"
+                        class="btn-primary"
+                        id="predict-button"
+                    >
+
+                        Estimate Car Price →
+
+                    </button>
+
+                </form>
+
+
+                <!-- ================= RESULT ================= -->
+
+                <div class="result-card" id="result">
+
+                    <div class="result-icon">
+                        ✨
+                    </div>
+
+                    <h3>Estimated Car Price</h3>
+
+                    <p>
+                        Hasil estimasi harga kendaraan
+                        akan ditampilkan di sini.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= ABOUT SECTION ================= -->
+
+        <section class="about" id="about">
+
+            <span class="tagline">
+                ABOUT THE PROJECT
+            </span>
+
+            <h2>About Car Price Estimator</h2>
+
+            <p>
+                Car Price Estimator merupakan sistem estimasi
+                harga kendaraan bekas berbasis Machine Learning.
+                Sistem ini memanfaatkan data spesifikasi kendaraan
+                untuk menghasilkan perkiraan nilai jual kendaraan
+                berdasarkan pola yang dipelajari dari dataset.
+            </p>
+
+            <div class="about-features">
+
+                <div class="about-item">
+                    <span>🚗</span>
+                    <h3>Vehicle Data</h3>
+                    <p>Informasi spesifikasi kendaraan.</p>
+                </div>
+
+                <div class="about-item">
+                    <span>🤖</span>
+                    <h3>Machine Learning</h3>
+                    <p>Model untuk memprediksi harga kendaraan.</p>
+                </div>
+
+                <div class="about-item">
+                    <span>📈</span>
+                    <h3>Price Estimation</h3>
+                    <p>Hasil estimasi berdasarkan data.</p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+            © 2026 Car Price Estimator | Academic Project
+        </p>
+
+        <p class="footer-disclaimer">
+            Disclaimer: Hasil estimasi merupakan perkiraan
+            berdasarkan model Machine Learning dan bukan
+            jaminan harga transaksi sebenarnya.
+        </p>
+
+    </footer>
+
+
+</body>
+</html>

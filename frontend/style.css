@@ -1,0 +1,728 @@
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+/* =========================
+   1. GLOBAL
+========================= */
+
+:root {
+    --lilac: #b99ae8;
+    --pink: #f2a9cb;
+    --blue: #a7c8f5;
+    --dark: #343047;
+    --muted: #77758b;
+    --white: #ffffff;
+    --background: #fcfaff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--dark);
+    background: var(--background);
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* =========================
+   2. NAVBAR
+========================= */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 8%;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid #f0eafa;
+}
+
+.logo {
+    font-family: 'Poppins', sans-serif;
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.logo span {
+    color: var(--lilac);
+}
+
+nav {
+    display: flex;
+    gap: 32px;
+}
+
+nav a {
+    color: var(--dark);
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #ad85dc;
+}
+
+/* =========================
+   3. HERO SECTION
+========================= */
+
+.hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 570px;
+    padding: 80px 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 35px;
+
+    background:
+        radial-gradient(circle at 85% 15%, #f8d9eb, transparent 35%),
+        radial-gradient(circle at 10% 85%, #dcd0fa, transparent 40%),
+        linear-gradient(120deg, #f8f3ff, #f2f7ff);
+
+    background-size: 200% 200%;
+    animation: gradientMove 12s ease infinite;
+}
+
+@keyframes gradientMove {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 570px;
+    animation: fadeUp 1s ease both;
+}
+
+.tagline {
+    display: inline-block;
+    color: #9875ce;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 18px;
+}
+
+.hero h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(40px, 5vw, 65px);
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.hero h1 span {
+    background: linear-gradient(
+        90deg,
+        #a987df,
+        #e99bc5,
+        #82aeea
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    max-width: 470px;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+/* =========================
+   4. BUTTON
+========================= */
+
+.btn-primary {
+    display: inline-block;
+    padding: 15px 28px;
+    border: none;
+    border-radius: 13px;
+    color: white;
+    background: linear-gradient(
+        100deg,
+        #a98cdd,
+        #e99fc9
+    );
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 8px 20px rgba(169,140,221,0.2);
+}
+
+.btn-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 13px 28px rgba(169,140,221,0.35);
+}
+
+/* =========================
+   5. HERO VISUAL
+========================= */
+
+.hero-visual {
+    position: relative;
+    width: 440px;
+    height: 360px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* FLOATING DECORATION */
+
+.floating-circle {
+    position: absolute;
+    border-radius: 50%;
+    animation: floatCircle 6s ease-in-out infinite;
+}
+
+.circle-one {
+    width: 75px;
+    height: 75px;
+    background: #efc5e1;
+    top: 15px;
+    left: 25px;
+}
+
+.circle-two {
+    width: 45px;
+    height: 45px;
+    background: #b9a3ed;
+    top: 55px;
+    right: 30px;
+    animation-delay: 1s;
+}
+
+.circle-three {
+    width: 60px;
+    height: 60px;
+    background: #b7d4fa;
+    bottom: 25px;
+    left: 45px;
+    animation-delay: 2s;
+}
+
+@keyframes floatCircle {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* =========================
+   6. CSS CAR ANIMATION
+========================= */
+
+.car-scene {
+    position: absolute;
+    width: 100%;
+    height: 220px;
+    top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.car {
+    position: absolute;
+    width: 245px;
+    height: 115px;
+    z-index: 3;
+    animation: carBounce 1.2s ease-in-out infinite;
+}
+
+@keyframes carBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* CAR ROOF */
+
+.car-roof {
+    position: absolute;
+    width: 135px;
+    height: 65px;
+    left: 55px;
+    top: 5px;
+    background: linear-gradient(
+        135deg,
+        #c5a9f1,
+        #e9acd0
+    );
+    border: 3px solid white;
+    border-radius: 65px 65px 10px 10px;
+    transform: skewX(-12deg);
+}
+
+/* CAR WINDOW */
+
+.car-window {
+    position: absolute;
+    width: 85px;
+    height: 40px;
+    top: 8px;
+    left: 25px;
+    border-radius: 40px 40px 5px 5px;
+    background: linear-gradient(
+        135deg,
+        #dff1ff,
+        #a8c9ed
+    );
+    border: 3px solid rgba(255,255,255,0.8);
+}
+
+/* CAR BODY */
+
+.car-body {
+    position: absolute;
+    width: 245px;
+    height: 53px;
+    bottom: 15px;
+    background: linear-gradient(
+        135deg,
+        #f5b5d3,
+        #b99ae8
+    );
+    border: 3px solid white;
+    border-radius: 35px 55px 18px 18px;
+    box-shadow: 0 10px 20px rgba(154,120,192,0.2);
+}
+
+.car-light {
+    position: absolute;
+    width: 15px;
+    height: 12px;
+    right: 0;
+    top: 15px;
+    border-radius: 10px 0 0 10px;
+    background: #fff3bd;
+    box-shadow: 0 0 12px #fff3bd;
+}
+
+/* WHEELS */
+
+.wheel {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    bottom: 0;
+    border: 7px solid #514b65;
+    background: #d9d5e8;
+    border-radius: 50%;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: wheelRotate 1s linear infinite;
+}
+
+.wheel-left {
+    left: 38px;
+}
+
+.wheel-right {
+    right: 38px;
+}
+
+.wheel-center {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid #a28ac9;
+}
+
+@keyframes wheelRotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ROAD */
+
+.road {
+    position: absolute;
+    width: 100%;
+    height: 7px;
+    bottom: 25px;
+    background: rgba(151,126,202,0.2);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.road-line {
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    top: 2px;
+    background: repeating-linear-gradient(
+        90deg,
+        #a98cdd 0 25px,
+        transparent 25px 45px
+    );
+    animation: roadMove 0.8s linear infinite;
+}
+
+@keyframes roadMove {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-45px);
+    }
+}
+
+/* =========================
+   7. FLOATING INFO CARDS
+========================= */
+
+.floating-card {
+    position: absolute;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 18px;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid white;
+    border-radius: 16px;
+    box-shadow: 0 12px 35px rgba(100,80,140,0.12);
+    animation: cardFloat 5s ease-in-out infinite;
+}
+
+.floating-card strong,
+.floating-card small {
+    display: block;
+}
+
+.floating-card strong {
+    font-size: 13px;
+}
+
+.floating-card small {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+.card-icon {
+    font-size: 25px;
+}
+
+.card-top {
+    top: 15px;
+    right: 0;
+}
+
+.card-bottom {
+    bottom: 10px;
+    left: 0;
+    animation-delay: 1.5s;
+}
+
+@keyframes cardFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+/* =========================
+   8. ESTIMATOR SECTION
+========================= */
+
+.estimator {
+    padding: 85px 8%;
+}
+
+.section-heading {
+    text-align: center;
+    margin-bottom: 38px;
+}
+
+.section-heading h2,
+.about h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.section-heading p,
+.about p {
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+/* =========================
+   9. FORM CARD
+========================= */
+
+.form-card {
+    max-width: 850px;
+    margin: auto;
+    padding: 38px;
+    background: white;
+    border: 1px solid #eee8fa;
+    border-radius: 22px;
+    box-shadow: 0 15px 45px rgba(116,94,160,0.08);
+    transition: 0.35s;
+}
+
+.form-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(116,94,160,0.14);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #e8e2f1;
+    border-radius: 10px;
+    background: #fcfaff;
+    color: var(--dark);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.form-group input:hover,
+.form-group select:hover {
+    border-color: var(--blue);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--lilac);
+    box-shadow: 0 0 0 4px rgba(185,154,232,0.15);
+}
+
+#prediction-form .btn-primary {
+    width: 100%;
+}
+
+/* =========================
+   10. RESULT CARD
+========================= */
+
+.result-card {
+    margin-top: 28px;
+    padding: 28px;
+    border-radius: 18px;
+    background: linear-gradient(
+        120deg,
+        #f3eaff,
+        #fff0f7,
+        #edf5ff
+    );
+    text-align: center;
+    transition: 0.35s;
+}
+
+.result-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(169,140,221,0.15);
+}
+
+.result-card h3 {
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 8px;
+}
+
+.result-card p {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* =========================
+   11. ABOUT
+========================= */
+
+.about {
+    padding: 70px 8%;
+    text-align: center;
+    background: linear-gradient(
+        120deg,
+        #f5f0fc,
+        #fff3f9,
+        #eff6ff
+    );
+}
+
+.about p {
+    max-width: 650px;
+    margin: auto;
+}
+
+/* =========================
+   12. FOOTER
+========================= */
+
+footer {
+    padding: 25px;
+    text-align: center;
+    color: var(--muted);
+    background: white;
+    font-size: 13px;
+}
+
+/* =========================
+   13. ENTRANCE ANIMATION
+========================= */
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-heading,
+.form-card,
+.about {
+    animation: fadeUp 0.8s ease both;
+}
+
+/* =========================
+   14. RESPONSIVE
+========================= */
+
+@media (max-width: 850px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 75px 6%;
+    }
+
+    .hero-content {
+        margin: auto;
+    }
+
+    .hero p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-visual {
+        width: min(100%, 440px);
+    }
+}
+
+@media (max-width: 650px) {
+    .navbar {
+        padding: 18px 5%;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    nav {
+        gap: 20px;
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 65px 6%;
+    }
+
+    .hero-visual {
+        height: 310px;
+    }
+
+    .car {
+        transform: scale(0.85);
+    }
+
+    .estimator {
+        padding: 65px 5%;
+    }
+
+    .form-card {
+        padding: 22px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-heading h2,
+    .about h2 {
+        font-size: 26px;
+    }
+
+    .floating-card {
+        padding: 11px;
+    }
+}
+
+/* =========================
+   15. REDUCED MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        scroll-behavior: auto !important;
+    }
+}
