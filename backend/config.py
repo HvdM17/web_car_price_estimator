@@ -5,11 +5,18 @@ PROJECT_DIR = BASE_DIR.parent                     # root proyek
 FRONTEND_DIR = PROJECT_DIR / "frontend"
 MODEL_DIR = PROJECT_DIR / "models"
 MODEL_PATH = MODEL_DIR / "model_kelompok_X.joblib"
-META_PATH = MODEL_DIR / "model_meta.json"         # ditulis oleh training/train.py
+META_PATH = MODEL_DIR / "model_meta.json"
+OPTIONS_PATH = MODEL_DIR / "options.json"
+FEATURE_COLUMNS_PATH = MODEL_DIR / "feature_columns.json"
+DATASET_PATH = PROJECT_DIR / "data" / "cardekho_dataset.csv"
+FEATURE_COLUMNS = [
+    "brand", "model", "vehicle_age", "km_driven", "seller_type",
+    "fuel_type", "transmission_type", "mileage", "engine", "max_power", "seats",
+]
 
 NUMERIC_FEATURES = ["vehicle_age", "km_driven", "mileage", "engine", "max_power", "seats"]
 CATEGORICAL_FEATURES = ["brand", "model", "seller_type", "fuel_type", "transmission_type"]
-FEATURE_ORDER = NUMERIC_FEATURES + CATEGORICAL_FEATURES
+FEATURE_ORDER = FEATURE_COLUMNS
 
 # Daftar ini diambil dari data setelah cleaning. D4 (Mercedes-AMG) belum diputuskan.
 BRANDS = [

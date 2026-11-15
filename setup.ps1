@@ -62,17 +62,19 @@ if ($LASTEXITCODE -ne 0) {
 }
 Write-Ok "Dependensi terpasang"
 
-# 5. Cek dataset (tidak ada di GitHub)
+# 5. Cek dataset dan artefak
 Write-Step "[5/5] Mengecek dataset..."
 if (Test-Path "data\cardekho_dataset.csv") {
     Write-Ok "Dataset ditemukan."
 } else {
-    Write-Warn "Dataset BELUM ada. Unduh cardekho_dataset.csv dari:"
-    Write-Host "https://www.kaggle.com/datasets/manishkr1754/cardekho-used-car-data"
+    Write-Warn "Dataset BELUM ada. Letakkan cardekho_dataset.csv di folder data\"
     Write-Warn "Lalu letakkan di folder data\"
 }
 
 Write-Host ""
 Write-Ok "Setup selesai."
+if (Test-Path "data\cardekho_dataset.csv") {
+    Write-Host "Latih model dengan: .\venv\Scripts\python.exe training\train.py"
+}
 Write-Host "Aktifkan venv setiap kali mulai kerja dengan:"
 Write-Host "  .\venv\Scripts\Activate.ps1"

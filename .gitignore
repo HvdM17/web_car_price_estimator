@@ -3,4 +3,4 @@ __pycache__/
 .pytest_cache/
 .ipynb_checkpoints/
 *.log
-data/cardekho_dataset.csv
+# Dataset and generated model artifacts are part of the runnable prototype.

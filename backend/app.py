@@ -9,16 +9,16 @@ from fastapi.staticfiles import StaticFiles
 
 try:
     # Works with: uvicorn backend.app:app (run from project root)
-    from .config import FEATURE_ORDER, FRONTEND_DIR, META_PATH, MODEL_PATH
-    from .schemas import CarInput, HealthOutput, PredictionOutput
+    from .config import FEATURE_ORDER, FRONTEND_DIR, META_PATH, MODEL_PATH, OPTIONS_PATH
+    from .schemas import CarInput, HealthOutput, OptionsOutput, PredictionOutput
 except ImportError:
     # Also works with: cd backend; uvicorn app:app --reload
-    from config import FEATURE_ORDER, FRONTEND_DIR, META_PATH, MODEL_PATH
-    from schemas import CarInput, HealthOutput, PredictionOutput
+    from config import FEATURE_ORDER, FRONTEND_DIR, META_PATH, MODEL_PATH, OPTIONS_PATH
+    from schemas import CarInput, HealthOutput, OptionsOutput, PredictionOutput
 
 logger = logging.getLogger("uvicorn.error")
 
-state = {"pipeline": None, "meta": None}
+state = {"pipeline": None, "meta": None, "options": None}
 
 
 @asynccontextmanager
@@ -26,15 +26,18 @@ async def lifespan(app: FastAPI):
     try:
         state["pipeline"] = joblib.load(MODEL_PATH)
         state["meta"] = json.loads(META_PATH.read_text(encoding="utf-8"))
+        state["options"] = json.loads(OPTIONS_PATH.read_text(encoding="utf-8"))
         logger.info("Model dimuat: %s", MODEL_PATH.name)
     except FileNotFoundError:
         state["pipeline"] = None
         state["meta"] = None
+        state["options"] = None
         logger.warning("Model belum tersedia: %s", MODEL_PATH.name)
     except Exception:
         # Server tetap jalan. /health akan melaporkan model_loaded: false.
         state["pipeline"] = None
         state["meta"] = None
+        state["options"] = None
         logger.exception("Gagal memuat model")
     yield
 
@@ -52,12 +55,23 @@ def health():
     )
 
 
+@app.get("/options", response_model=OptionsOutput)
+def options():
+    if state["options"] is None:
+        raise HTTPException(status_code=503, detail="Opsi belum siap")
+    return state["options"]
+
+
 @app.post("/predict", response_model=PredictionOutput)
 def predict(payload: CarInput):
     pipeline = state["pipeline"]
     meta = state["meta"]
     if pipeline is None or meta is None:
         raise HTTPException(status_code=503, detail="Model belum siap")
+
+    models_by_brand = (state["options"] or {}).get("models_by_brand", {})
+    if payload.model not in models_by_brand.get(payload.brand, []):
+        raise HTTPException(status_code=422, detail="Model tidak sesuai dengan merek")
 
     row = pd.DataFrame([payload.model_dump()])[FEATURE_ORDER]
 

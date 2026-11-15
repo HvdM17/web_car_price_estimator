@@ -13,7 +13,7 @@ def _check_in(value: str, allowed: list[str], label: str) -> str:
 
 
 class CarInput(BaseModel):
-    brand: str
+    brand: str = Field(min_length=1, max_length=40)
     model: str = Field(min_length=1, max_length=50)
     vehicle_age: int = Field(ge=0, le=30)
     km_driven: int = Field(ge=0, le=1_000_000)
@@ -63,3 +63,11 @@ class HealthOutput(BaseModel):
     status: str
     model_loaded: bool
     model_version: str | None = None
+
+
+class OptionsOutput(BaseModel):
+    brands: list[str]
+    models_by_brand: dict[str, list[str]]
+    seller_types: list[str]
+    fuel_types: list[str]
+    transmission_types: list[str]
