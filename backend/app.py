@@ -7,8 +7,14 @@ import pandas as pd
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 
-from config import FEATURE_ORDER, FRONTEND_DIR, META_PATH, MODEL_PATH
-from schemas import CarInput, HealthOutput, PredictionOutput
+try:
+    # Works with: uvicorn backend.app:app (run from project root)
+    from .config import FEATURE_ORDER, FRONTEND_DIR, META_PATH, MODEL_PATH
+    from .schemas import CarInput, HealthOutput, PredictionOutput
+except ImportError:
+    # Also works with: cd backend; uvicorn app:app --reload
+    from config import FEATURE_ORDER, FRONTEND_DIR, META_PATH, MODEL_PATH
+    from schemas import CarInput, HealthOutput, PredictionOutput
 
 logger = logging.getLogger("uvicorn.error")
 
