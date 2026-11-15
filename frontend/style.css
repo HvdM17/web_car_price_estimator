@@ -93,7 +93,9 @@ nav a:focus-visible {
   grid-template-columns: 1.4fr .8fr;
   gap: 48px;
   align-items: center;
-  min-height: 500px;
+  min-height: 440px;
+  padding-top: 56px;
+  padding-bottom: 56px;
 }
 
 .eyebrow {
@@ -107,7 +109,7 @@ nav a:focus-visible {
 .hero h1 {
   max-width: 15ch;
   margin: 0 0 20px;
-  font-size: clamp(2.5rem, 5.3vw, 4.25rem);
+  font-size: clamp(2.5rem, 4.8vw, 4rem);
   line-height: 1.05;
   letter-spacing: -.06em;
 }
@@ -322,6 +324,18 @@ small:empty {
   margin-top: 12px;
   color: var(--accent-strong) !important;
   font-variant-numeric: tabular-nums;
+}
+
+.exchange-rate {
+  margin-top: 16px;
+  color: var(--text) !important;
+  font-size: .9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.exchange-date {
+  margin-top: -8px;
+  font-size: .82rem;
 }
 
 .model-version {

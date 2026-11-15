@@ -1,6 +1,6 @@
 # Estimator Harga Mobil Bekas
 
-Prototipe edukatif prediksi harga mobil bekas berbasis FastAPI dan scikit-learn. Harga berasal dari dataset CarDekho dan ditampilkan dalam INR.
+Prototipe edukatif prediksi harga mobil bekas berbasis FastAPI dan scikit-learn. Harga model berasal dari dataset CarDekho dalam INR, lalu ditampilkan dalam Rupiah (IDR) menggunakan kurs lokal yang tercatat.
 
 ## Menjalankan
 

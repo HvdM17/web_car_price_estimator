@@ -108,6 +108,7 @@ Catatan struktur:
 
 ### 4.3 `config.py`
 - Path model dan dataset.
+- Path konfigurasi kurs lokal `backend/exchange_rate.json` (INR→IDR).
 - Daftar kategori yang valid (`BRANDS`, `FUEL_TYPES`, `SELLER_TYPES`, `TRANSMISSION_TYPES`) yang diambil dari data setelah cleaning, sehingga dropdown di frontend dan validasi backend selalu sama.
 - Rentang validasi numerik (lihat bagian 5).
 
@@ -155,6 +156,11 @@ Response 200:
   "currency": "INR",
   "range_low": 180000,
   "range_high": 250000,
+  "predicted_price_idr": 40903750,
+  "range_low_idr": 34245000,
+  "range_high_idr": 47562500,
+  "exchange_rate": 190.25,
+  "exchange_rate_date": "2026-11-15",
   "range_note": "Rentang ± MAE dari data uji, bukan interval kepercayaan statistik",
   "model_name": "Random Forest",
   "model_version": "model_kelompok_X.joblib"
@@ -185,6 +191,7 @@ Kategorikal (`brand`, `model`, `seller_type`, `fuel_type`, `transmission_type`) 
 | Kategori tidak dikenal | 422 | Validator custom |
 | Body bukan JSON | 400 | "Body harus berupa JSON" |
 | Model gagal dimuat saat startup | 503 pada `/predict` | "Model belum siap" |
+| Konfigurasi kurs lokal tidak tersedia atau tidak valid | 503 pada `/predict` | "Kurs konversi belum siap" |
 | Error tak terduga saat prediksi | 500 | "Terjadi kesalahan internal" (detail tidak dibocorkan ke klien) |
 
 Frontend wajib menampilkan pesan error ini secara ramah, bukan respons mentah.
@@ -233,7 +240,7 @@ Evaluasi:
 - HTML5, CSS3, dan JavaScript dengan Fetch API. Tanpa framework tambahan.
 - Form dikirim lewat `fetch('/predict', { method: 'POST', ... })` dengan `event.preventDefault()`, sehingga halaman tidak reload.
 - Dropdown dibangun dari nilai di `config.py`. Sumbernya bisa berupa `GET /options` (endpoint tambahan, opsional) atau data yang ditanam ke HTML saat build.
-- Hasil prediksi, rentang estimasi, dan disclaimer ditampilkan di komponen hasil.
+- Hasil dan rentang ditampilkan dalam IDR dengan kurs/tanggal dari konfigurasi lokal; API tetap mengembalikan prediksi asli dalam INR.
 
 ---
 

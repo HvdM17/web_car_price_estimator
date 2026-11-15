@@ -8,6 +8,7 @@ MODEL_PATH = MODEL_DIR / "model_kelompok_X.joblib"
 META_PATH = MODEL_DIR / "model_meta.json"
 OPTIONS_PATH = MODEL_DIR / "options.json"
 FEATURE_COLUMNS_PATH = MODEL_DIR / "feature_columns.json"
+EXCHANGE_RATE_PATH = BASE_DIR / "exchange_rate.json"
 DATASET_PATH = PROJECT_DIR / "data" / "cardekho_dataset.csv"
 FEATURE_COLUMNS = [
     "brand", "model", "vehicle_age", "km_driven", "seller_type",

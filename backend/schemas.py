@@ -1,3 +1,7 @@
+from datetime import date
+from decimal import Decimal
+from typing import Literal
+
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 try:
@@ -53,9 +57,22 @@ class PredictionOutput(BaseModel):
     currency: str = "INR"
     range_low: int
     range_high: int
+    predicted_price_idr: int
+    range_low_idr: int
+    range_high_idr: int
+    exchange_rate: float
+    exchange_rate_date: date
     range_note: str
     model_name: str = "Random Forest"
     model_version: str
+
+
+class ExchangeRateConfig(BaseModel):
+    base_currency: Literal["INR"]
+    display_currency: Literal["IDR"]
+    inr_to_idr: Decimal = Field(gt=0, allow_inf_nan=False)
+    updated_at: date
+    source: str = Field(min_length=1)
 
 
 class HealthOutput(BaseModel):

@@ -9,7 +9,7 @@ const navToggle = document.querySelector('#nav-toggle');
 const primaryNav = document.querySelector('#primary-nav');
 let options = null;
 
-const money = value => new Intl.NumberFormat('en-IN', {style: 'currency', currency: 'INR', maximumFractionDigits: 0}).format(value);
+const money = value => new Intl.NumberFormat('id-ID', {style: 'currency', currency: 'IDR', maximumFractionDigits: 0}).format(value);
 const fill = (select, values) => values.forEach(value => select.add(new Option(value, value)));
 
 function setNavigationOpen(open) {
@@ -78,9 +78,9 @@ form.addEventListener('submit', async event => {
   try {
     const response = await fetch('/predict', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
     const body = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(response.status === 422 ? 'Periksa kategori atau nilai input.' : response.status === 503 ? 'Layanan model belum siap.' : 'Terjadi kesalahan server.');
+    if (!response.ok) throw new Error(response.status === 422 ? 'Periksa kategori atau nilai input.' : response.status === 503 ? 'Layanan estimasi belum siap.' : 'Terjadi kesalahan server.');
     setResultState('success');
-    result.innerHTML = `<p class="eyebrow">HASIL ESTIMASI</p><h2 class="price">${money(body.predicted_price)}</h2><p class="range">Rentang: ${money(body.range_low)} – ${money(body.range_high)}</p><p>${body.range_note}</p><p class="model-version">Model digunakan: ${body.model_name || 'Random Forest'}</p><p class="disclaimer"><strong>Disclaimer Akademik:</strong> Hasil ini hanya untuk pembelajaran dan bukan penilaian profesional.</p>`;
+    result.innerHTML = `<p class="eyebrow">HASIL ESTIMASI · IDR</p><h2 class="price">${money(body.predicted_price_idr)}</h2><p class="range">Rentang: ${money(body.range_low_idr)} – ${money(body.range_high_idr)}</p><p>${body.range_note}</p><p class="model-version">Model digunakan: ${body.model_name || 'Random Forest'}</p><p class="disclaimer"><strong>Disclaimer Akademik:</strong> Hasil ini hanya untuk pembelajaran dan bukan penilaian profesional.</p>`;
     result.scrollIntoView({block: 'nearest'});
   } catch (error) {
     showError(error instanceof TypeError ? 'Tidak dapat terhubung ke server.' : error.message);

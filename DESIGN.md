@@ -40,8 +40,8 @@ Referensi ini memperlihatkan pola yang umum dan bisa dipakai ulang. Ada beberapa
 
 Untuk proyek ini:
 - Setiap ikon navigasi disertai label.
-- Setiap angka harga diberi satuan `₹`.
-- Latar hero dibuat polos atau gradasi gelap tanpa gambar, dengan kontras teks minimal 4,5:1.
+- Setiap angka harga ditampilkan dalam Rupiah (`Rp`); INR hanya menjadi mata uang dasar model dan kurs konversi diberi tanggal pembaruan.
+- Latar hero dibuat polos tanpa gambar atau gradasi, dengan kontras teks minimal 4,5:1.
 - Teks panjang dipotong dengan `text-overflow: ellipsis` dan `title` untuk tooltip.
 
 ---
@@ -112,7 +112,7 @@ Lebar konten maksimum 1200px, dengan padding horizontal 16px (mobile) dan 32px (
 │ Navbar                                                      │
 ├─────────────────────────────┬───────────────────────────────┤
 │ Form input (11 field)       │ Panel hasil                   │
-│  Kelompok: Mobil            │  - Estimasi harga (₹)         │
+│  Kelompok: Mobil            │  - Estimasi harga (Rp)        │
 │  Kelompok: Mesin            │  - Rentang low–high           │
 │  Kelompok: Kepemilikan      │  - Info model yang dipakai    │
 │  [ Estimasi Harga ]         │  - Disclaimer                 │
@@ -194,15 +194,16 @@ Label yang ditampilkan ke pengguna dalam Bahasa Indonesia, tetapi nilai yang dik
 |---|---|
 | Awal | Panel hasil berisi teks "Isi form lalu klik Estimasi Harga" |
 | Loading | Spinner kecil dan tombol disabled |
-| Sukses | Harga utama besar (contoh: `₹ 2,15,000`), rentang di bawahnya, info model, dan disclaimer |
+| Sukses | Harga utama besar dalam IDR, rentang IDR, kurs INR→IDR, tanggal pembaruan kurs, info model, dan disclaimer |
 | Error validasi (422) | Pesan di field terkait, panel hasil menampilkan ringkasan "Periksa kembali isian" |
 | Error server (500 / 503) | Kartu merah dengan pesan "Layanan sedang tidak tersedia. Coba lagi beberapa saat." |
 | Gagal jaringan | Kartu merah dengan pesan "Tidak dapat terhubung ke server" dan tombol "Coba lagi" |
 
 ### 5.2 Format angka
 
-- Harga ditampilkan dengan simbol `₹` dan pemisah ribuan. Pola yang dipakai: `₹ 2,15,000` (format India) atau `₹ 215,000` (format internasional). Keputusan final dicatat di laporan.
-- Rentang ditampilkan sebagai `₹ 180,000 – ₹ 250,000`.
+- Harga dan rentang hasil ditampilkan sebagai Rupiah tanpa pecahan (`Rp40.113.834`) dengan format `id-ID`.
+- Detail nilai kurs dan tanggal pembaruan tetap tersedia di API, tetapi tidak ditampilkan di kartu hasil agar ringkas.
+- API tetap menyimpan harga dan rentang model dalam INR, lalu menambahkan nilai IDR hasil konversi dengan kurs yang sama.
 - Konsumsi BBM dan tenaga ditampilkan dengan satu desimal.
 
 ### 5.3 Penjelasan rentang
@@ -250,7 +251,7 @@ Teks disclaimer sama dengan PRD §9. Disclaimer di bawah hasil tidak boleh disem
 - [ ] Layout mobile satu kolom, panel hasil di bawah form
 - [ ] Semua field memiliki label, batas, dan pesan error
 - [ ] Dropdown model difilter berdasarkan merek
-- [ ] Format `₹` konsisten di seluruh halaman
+- [ ] Format `Rp` konsisten pada harga dan rentang hasil
 - [ ] Disclaimer tampil di footer dan di bawah hasil
 - [ ] Kontras teks memenuhi 4,5:1
 - [ ] Diuji di layar 375px, 768px, dan 1280px
