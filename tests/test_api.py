@@ -34,6 +34,7 @@ def test_valid_prediction_structure(client):
     body = response.json()
     assert body["predicted_price"] >= 0 and body["range_low"] <= body["range_high"]
     assert body["currency"] == "INR"
+    assert body["model_name"] == "Random Forest"
 
 
 def test_vehicle_age_limit(client):

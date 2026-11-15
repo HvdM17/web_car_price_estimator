@@ -54,6 +54,7 @@ class PredictionOutput(BaseModel):
     range_low: int
     range_high: int
     range_note: str
+    model_name: str = "Random Forest"
     model_version: str
 
 

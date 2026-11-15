@@ -18,7 +18,7 @@ Server juga dapat dijalankan dari folder `backend` dengan `uvicorn app:app --rel
 
 ## API singkat
 
-`POST /predict` menerima 11 fitur kendaraan dan mengembalikan estimasi harga, rentang ± MAE, mata uang, serta versi model. `GET /options` menjadi sumber kategori frontend dan validasi pasangan merek-model.
+`POST /predict` menerima 11 fitur kendaraan dan mengembalikan estimasi harga, rentang ± MAE, mata uang, nama model yang ramah pengguna, serta versi artefak model. `GET /options` menjadi sumber kategori frontend dan validasi pasangan merek-model.
 
 ## Disclaimer Akademik
 

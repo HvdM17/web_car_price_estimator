@@ -75,7 +75,8 @@ def main() -> None:
     models_by_brand = {brand: sorted(group["model"].unique().tolist()) for brand, group in df.groupby("brand")}
     (MODEL_DIR / "options.json").write_text(json.dumps({"brands": sorted(models_by_brand), "models_by_brand": models_by_brand, "seller_types": sorted(df["seller_type"].unique()), "fuel_types": sorted(df["fuel_type"].unique()), "transmission_types": sorted(df["transmission_type"].unique())}, indent=2), encoding="utf-8")
     (MODEL_DIR / "feature_columns.json").write_text(json.dumps(FEATURES, indent=2), encoding="utf-8")
-    (MODEL_DIR / "model_meta.json").write_text(json.dumps({"model": best_name, "best_params": search.best_params_, "metrics": metrics, "mae": metrics["mae"], "train_rows": len(X_train), "test_rows": len(X_test), "cv_scores": scores}, indent=2), encoding="utf-8")
+    model_names = {"linear_regression": "Linear Regression", "random_forest": "Random Forest", "gradient_boosting": "Gradient Boosting"}
+    (MODEL_DIR / "model_meta.json").write_text(json.dumps({"model": best_name, "model_name": model_names[best_name], "best_params": search.best_params_, "metrics": metrics, "mae": metrics["mae"], "train_rows": len(X_train), "test_rows": len(X_test), "cv_scores": scores}, indent=2), encoding="utf-8")
     print(json.dumps({"model": best_name, "metrics": metrics, "artifacts": [str(MODEL_PATH), str(OUT_DATA), str(MODEL_DIR / "model_meta.json"), str(MODEL_DIR / "feature_columns.json"), str(MODEL_DIR / "options.json")]}, indent=2))
 
 

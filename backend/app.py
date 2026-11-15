@@ -91,6 +91,7 @@ def predict(payload: CarInput):
         range_note=(
             "Rentang ± MAE dari data uji, bukan interval kepercayaan statistik"
         ),
+        model_name=str(meta.get("model_name", "Random Forest")),
         model_version=MODEL_PATH.name,
     )
 

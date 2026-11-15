@@ -80,7 +80,7 @@ form.addEventListener('submit', async event => {
     const body = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(response.status === 422 ? 'Periksa kategori atau nilai input.' : response.status === 503 ? 'Layanan model belum siap.' : 'Terjadi kesalahan server.');
     setResultState('success');
-    result.innerHTML = `<p class="eyebrow">HASIL ESTIMASI</p><h2 class="price">${money(body.predicted_price)}</h2><p class="range">Rentang: ${money(body.range_low)} – ${money(body.range_high)}</p><p>${body.range_note}</p><p class="model-version">Model: ${body.model_version}</p><p class="disclaimer"><strong>Disclaimer Akademik:</strong> Hasil ini hanya untuk pembelajaran dan bukan penilaian profesional.</p>`;
+    result.innerHTML = `<p class="eyebrow">HASIL ESTIMASI</p><h2 class="price">${money(body.predicted_price)}</h2><p class="range">Rentang: ${money(body.range_low)} – ${money(body.range_high)}</p><p>${body.range_note}</p><p class="model-version">Model digunakan: ${body.model_name || 'Random Forest'}</p><p class="disclaimer"><strong>Disclaimer Akademik:</strong> Hasil ini hanya untuk pembelajaran dan bukan penilaian profesional.</p>`;
     result.scrollIntoView({block: 'nearest'});
   } catch (error) {
     showError(error instanceof TypeError ? 'Tidak dapat terhubung ke server.' : error.message);

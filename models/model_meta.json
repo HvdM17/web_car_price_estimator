@@ -1,5 +1,6 @@
 {
   "model": "random_forest",
+  "model_name": "Random Forest",
   "best_params": {
     "model__max_depth": 20,
     "model__n_estimators": 150

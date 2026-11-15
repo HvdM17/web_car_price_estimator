@@ -156,6 +156,7 @@ Response 200:
   "range_low": 180000,
   "range_high": 250000,
   "range_note": "Rentang ± MAE dari data uji, bukan interval kepercayaan statistik",
+  "model_name": "Random Forest",
   "model_version": "model_kelompok_X.joblib"
 }
 ```
