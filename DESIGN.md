@@ -57,7 +57,7 @@ Untuk proyek ini:
   --text: #f5f7fa;
   --text-muted: #9aa4b2;
   --accent: #1f5eff;
-  --accent-hover: #3d75ff;
+  --accent-hover: #194dc3;
   --success: #22c55e;
   --danger: #ef4444;
   --radius: 12px;
@@ -227,8 +227,10 @@ Teks disclaimer sama dengan PRD §9. Disclaimer di bawah hasil tidak boleh disem
 - Setiap field punya `<label>` yang terhubung dengan `for`/`id`.
 - Pesan error menggunakan `aria-live="polite"` agar dibacakan oleh pembaca layar.
 - Semua tombol dan tautan bisa dijangkau dengan Tab dan memiliki focus style yang terlihat.
-- Target sentuh minimal 44×44 px pada mobile.
-- Animasi dibatasi dengan `prefers-reduced-motion`.
+- Di bawah 640px, navigasi memakai tombol menu dengan `aria-expanded`; tautan menu tetap dapat dijangkau dengan keyboard dan tombol Escape menutup menu.
+- Target sentuh tombol, tautan navigasi, dan kontrol form minimal 44×44 px.
+- Panel hasil menandai status proses dengan `aria-busy`; state loading dan error dibedakan secara visual.
+- Animasi dibatasi dan scroll otomatis menghormati `prefers-reduced-motion`.
 
 ---
 

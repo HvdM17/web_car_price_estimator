@@ -12,7 +12,8 @@
 <body>
   <header class="site-header">
     <a class="logo" href="#home">Car<span>Price</span></a>
-    <nav aria-label="Navigasi utama"><a href="#home">Beranda</a><a href="#predict">Prediksi</a><a href="#about">Tentang</a></nav>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Buka navigasi utama">Menu</button>
+    <nav id="primary-nav" aria-label="Navigasi utama"><a href="#home">Beranda</a><a href="#predict">Prediksi</a><a href="#about">Tentang</a></nav>
   </header>
   <main>
     <section class="hero" id="home">
@@ -43,7 +44,7 @@
           <button class="button" id="submit" type="submit">Estimasi harga</button>
           <p class="form-error" id="form-error" role="alert"></p>
         </form>
-        <section class="result" id="result" aria-live="polite"><p class="eyebrow">HASIL ESTIMASI</p><h2>Belum ada hasil</h2><p>Isi form lalu klik “Estimasi harga”.</p></section>
+        <section class="result" id="result" aria-live="polite" aria-busy="false"><p class="eyebrow">HASIL ESTIMASI</p><h2>Belum ada hasil</h2><p>Isi form lalu klik “Estimasi harga”.</p></section>
       </div>
     </section>
     <section class="content about" id="about"><p class="eyebrow">TENTANG</p><h2>Belajar dari pipeline machine learning</h2><p>Aplikasi ini menunjukkan alur data, validasi, pipeline preprocessing, dan prediksi regresi melalui antarmuka web sederhana.</p></section>
