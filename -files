@@ -1,0 +1,5 @@
+[33mdbd5aa4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeat/backend-setup[m[33m, [m[1;31morigin/feat/backend-setup[m[33m)[m feat: kerangka backend FastAPI (config, schemas, app)
+[33m939da0f[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m, [m[1;32mfeat/data-eda[m[33m)[m chore: abaikan dataset csv
+[33ma46573b[m chore: tambah struktur folder
+[33m83c0df6[m docs: perbaiki README
+[33m26e0f16[m docs: setup awal proyek dan dokumen perencanaan

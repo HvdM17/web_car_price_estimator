@@ -1,6 +1,9 @@
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from config import BRANDS, FUEL_TYPES, SELLER_TYPES, TRANSMISSION_TYPES
+try:
+    from .config import BRANDS, FUEL_TYPES, SELLER_TYPES, TRANSMISSION_TYPES
+except ImportError:
+    from config import BRANDS, FUEL_TYPES, SELLER_TYPES, TRANSMISSION_TYPES
 
 
 def _check_in(value: str, allowed: list[str], label: str) -> str:
