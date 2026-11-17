@@ -2,7 +2,7 @@
 
 Dokumen arsitektur sistem **Estimator Harga Mobil Bekas** (Tugas Besar Praktikum Pembelajaran Mesin, Prodi S1 Sistem Informasi, Universitas Bengkulu).
 
-Status: **DRAFT v0.1**. Angka yang bertanda `[TENTATIF]` akan dikunci setelah tahap EDA dan cleaning selesai.
+Status: **Implemented baseline**. Dokumen ini menggambarkan implementasi yang berjalan pada branch `main`.
 
 ---
 
@@ -49,7 +49,7 @@ Alur sesuai panduan: **User → Form HTML → Fetch API → FastAPI Backend → 
 Struktur mengikuti layout proyek yang sudah dibuat di komputer pengembang. Server (`backend/`) dan antarmuka (`frontend/`) dipisah menjadi dua folder, sedangkan model, script training, dan data berada di folder terpisah.
 
 ```
-web_price_estimator/
+car_price_estimator/
 ├── .git/                           # Repository Git (dibuat oleh git init)
 ├── .gitignore                      # Mengabaikan venv/, __pycache__/, .pytest_cache/, dll.
 ├── README.md                       # Cara menjalankan proyek
@@ -69,27 +69,27 @@ web_price_estimator/
 │   └── app.js                      # Logika form, fetch API, render hasil
 ├── training/                       # Pipeline machine learning
 │   ├── train.py                    # Script training: cleaning, pipeline, CV, GridSearch, export
-│   ├── 01_eda.ipynb                # EDA, cleaning, dan pemilihan rentang validasi
-│   └── 02_modeling.ipynb           # Eksperimen perbandingan algoritma
+│   ├── 01_EDA.ipynb                # Notebook EDA
+│   ├── 02_modelling.ipynb          # Notebook modelling lama/pendukung
+│   └── train.py                    # Pipeline training yang dipakai sistem
 ├── models/                         # Hasil export model
 │   └── model_kelompok_X.joblib     # Pipeline final (preprocessing + model)
 ├── data/                           # Dataset
 │   ├── cardekho_dataset.csv        # Dataset mentah (tidak diubah)
 │   └── cardekho_clean.csv          # Hasil cleaning
 ├── tests/                          # Test API
-│   └── test_api.py                 # 12 test case minimal
+│   └── test_api.py                 # 13 test API
 ├── arsip_sintetis/                 # Arsip data sintetis lama (tidak dipakai di kode utama)
 └── venv/                           # Virtual environment lokal (tidak di-commit)
 ```
 
 Catatan struktur:
 - **Frontend dipisah dari backend.** `backend/app.py` melayani file dari `../frontend/` sebagai file statis. Path ini dihitung relatif terhadap lokasi `app.py`, sehingga server tidak bergantung pada direktori kerja saat dijalankan.
-- **Panduan Langkah 5** menempatkan `static/` di samping `app.py`. Struktur ini menyimpang dari panduan. Jika asisten meminta struktur persis, pindahkan `frontend/` ke dalam `backend/static/`.
+- Frontend tetap berada di `frontend/` dan dilayani `backend/app.py` melalui `StaticFiles`.
 - **`models/` dibaca oleh `backend/config.py`** sebagai path relatif terhadap root proyek. Pastikan training menulis ke folder yang sama.
-- **`arsip_sintetis/` dan `venv/` tidak di-commit.** Keduanya perlu ditambahkan ke `.gitignore`.
-- **`DATASET_*.md`** perlu diperiksa. Lihat catatan dataset di bawah.
+- **`venv/` dan cache lokal tidak di-commit.** Dataset dan artefak model aktif disimpan agar clone siap dijalankan.
 
-**Catatan dataset.** Nama file `DATASET_OULAD.md` menunjukkan dataset OULAD (data pembelajaran mahasiswa), bukan CarDekho. Dokumen ini dan seluruh rencana sebelumnya memakai `cardekho_dataset.csv`. Pastikan dataset yang dipakai sudah disetujui Asisten Praktikum (lihat HANDOFF.md D11) dan tidak termasuk dataset praktikum `student-por.csv`.
+**Catatan dataset.** Dataset yang dipakai adalah `data/cardekho_dataset.csv`, bukan dataset pembelajaran mahasiswa. Lisensi dan izin distribusi dataset tetap perlu dicatat untuk laporan.
 
 ## 4. Komponen Backend
 
@@ -99,6 +99,7 @@ Catatan struktur:
 - Endpoint:
   - `GET /health`: cek status server dan apakah model sudah termuat.
   - `POST /predict`: menerima payload JSON, memvalidasi lewat Pydantic, memprediksi harga.
+  - `GET /options`: menyediakan kategori frontend dan pasangan merek-model.
 - Menangani error secara eksplisit (lihat bagian 6).
 
 ### 4.2 `schemas.py`
@@ -167,12 +168,12 @@ Response 200:
 }
 ```
 
-### 5.3 Rentang validasi input `[TENTATIF]`
+### 5.3 Rentang validasi input
 
 | Field | Tipe | Batas | Sumber batas |
 |---|---|---|---|
 | `vehicle_age` | int | `ge=0, le=30` | Maks di data: 29 |
-| `km_driven` | int | `ge=0, le=1_000_000` | Data ada outlier hingga 3,8 juta km |
+| `km_driven` | int | `ge=0, le=1_000_000` | Batas training dan API saat ini |
 | `mileage` | float | `ge=4, le=40` | Data: 4–33,5. Perlu dicek satuan CNG/LPG |
 | `engine` | int | `ge=500, le=7000` | Data: 793–6.592 cc |
 | `max_power` | float | `ge=30, le=700` | Data: 38–626 bhp |
@@ -189,7 +190,7 @@ Kategorikal (`brand`, `model`, `seller_type`, `fuel_type`, `transmission_type`) 
 | JSON valid, tetapi field hilang | 422 | Pydantic default |
 | Nilai di luar rentang `ge`/`le` | 422 | Pydantic default, detail menunjuk field |
 | Kategori tidak dikenal | 422 | Validator custom |
-| Body bukan JSON | 400 | "Body harus berupa JSON" |
+| Body bukan JSON atau payload tidak valid | 422 | Detail validasi FastAPI/Pydantic |
 | Model gagal dimuat saat startup | 503 pada `/predict` | "Model belum siap" |
 | Konfigurasi kurs lokal tidak tersedia atau tidak valid | 503 pada `/predict` | "Kurs konversi belum siap" |
 | Error tak terduga saat prediksi | 500 | "Terjadi kesalahan internal" (detail tidak dibocorkan ke klien) |
@@ -206,7 +207,6 @@ Pipeline disusun dengan `ColumnTransformer` dan `Pipeline` agar preprocessing di
 preprocessor = ColumnTransformer(
     transformers=[
         ("num", Pipeline([
-            ("impute", SimpleImputer(strategy="median")),
             ("scale", StandardScaler()),
         ]), NUMERIC_FEATURES),
         ("cat", OneHotEncoder(handle_unknown="ignore"), CATEGORICAL_FEATURES),
@@ -224,14 +224,16 @@ Fitur input (11):
 - Kategorikal (5): `brand`, `model`, `seller_type`, `fuel_type`, `transmission_type`
 - Dibuang: `car_name` (redundan dengan `brand` + `model`), `Unnamed: 0` (index)
 
-Target: `selling_price`. Transformasi log dipertimbangkan jika distribusi sangat miring; keputusan dicatat di laporan.
+Target: `selling_price`. Pipeline aktif memakai transformasi target `log1p` dan mengembalikan prediksi ke skala harga asli.
 
 Evaluasi:
 - Validasi silang: **KFold 5-fold dengan shuffle** (stratified hanya untuk klasifikasi, sesuai panduan).
-- Algoritma pembanding: minimal 2–3 dari Linear Regression, Random Forest Regressor, Gradient Boosting Regressor.
-- Tuning: `GridSearchCV` untuk model terbaik.
+- Algoritma pembanding: Linear Regression, Random Forest Regressor, dan Gradient Boosting Regressor, masing-masing diuji pada target raw dan `log1p`.
+- Tuning: `GridSearchCV` pada kandidat terbaik; konfigurasi model aktif adalah Random Forest `n_estimators=100`, `max_depth=20` dengan target `log1p`.
 - Metrik: MAE, RMSE, R².
-- Ekspor: `joblib.dump(best_pipeline, "models/model_kelompok_X.joblib")` setelah dilatih ulang pada seluruh data training.
+- Ekspor: `joblib.dump(best_pipeline, "models/model_kelompok_X.joblib")` setelah fit pada split training 80%; metrik dihitung pada holdout 20%.
+
+Baseline aktif: MAE `108362.81 INR`, RMSE `617818.45 INR`, dan R² `0.7045`.
 
 ---
 
@@ -239,7 +241,7 @@ Evaluasi:
 
 - HTML5, CSS3, dan JavaScript dengan Fetch API. Tanpa framework tambahan.
 - Form dikirim lewat `fetch('/predict', { method: 'POST', ... })` dengan `event.preventDefault()`, sehingga halaman tidak reload.
-- Dropdown dibangun dari nilai di `config.py`. Sumbernya bisa berupa `GET /options` (endpoint tambahan, opsional) atau data yang ditanam ke HTML saat build.
+- Dropdown dibangun dari `GET /options`, yang berasal dari artefak opsi hasil cleaning dan dipakai untuk validasi pasangan merek-model.
 - Hasil dan rentang ditampilkan dalam IDR dengan kurs/tanggal dari konfigurasi lokal; API tetap mengembalikan prediksi asli dalam INR.
 
 ---

@@ -1,30 +1,43 @@
 {
   "model": "random_forest",
   "model_name": "Random Forest",
+  "target_transform": "log1p",
   "best_params": {
-    "model__max_depth": null,
-    "model__n_estimators": 30
+    "regressor__model__max_depth": 20,
+    "regressor__model__n_estimators": 100
   },
   "metrics": {
-    "mae": 109548.03033025227,
-    "rmse": 590963.731383849,
-    "r2": 0.729645895957292
+    "mae": 108362.813902437,
+    "rmse": 617818.4497137,
+    "r2": 0.7045166208308079
   },
-  "mae": 109548.03033025227,
+  "mae": 108362.813902437,
   "train_rows": 12192,
   "test_rows": 3048,
   "cv_scores": {
-    "linear_regression": {
+    "linear_regression_raw": {
       "cv_mae_mean": 177882.65861273961,
       "cv_mae_std": 6235.713973508262
     },
-    "random_forest": {
+    "linear_regression_log1p": {
+      "cv_mae_mean": 113837.1475202584,
+      "cv_mae_std": 2575.6145450029803
+    },
+    "random_forest_raw": {
       "cv_mae_mean": 101796.93379835229,
       "cv_mae_std": 1298.8301550620895
     },
-    "gradient_boosting": {
+    "random_forest_log1p": {
+      "cv_mae_mean": 101770.03028954689,
+      "cv_mae_std": 1969.0957109790484
+    },
+    "gradient_boosting_raw": {
       "cv_mae_mean": 120747.55244880871,
       "cv_mae_std": 1553.9053997659569
+    },
+    "gradient_boosting_log1p": {
+      "cv_mae_mean": 115455.58930358978,
+      "cv_mae_std": 1930.4379594572317
     }
   }
 }

@@ -6,7 +6,7 @@ from pathlib import Path
 import joblib
 import numpy as np
 import pandas as pd
-from sklearn.compose import ColumnTransformer
+from sklearn.compose import ColumnTransformer, TransformedTargetRegressor
 from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
@@ -52,19 +52,29 @@ def main() -> None:
     }
     cv = KFold(n_splits=5, shuffle=True, random_state=42)
     scores = {}
+    candidates = {}
     for name, estimator in models.items():
-        print(f"cv: {name}", flush=True)
-        pipeline = Pipeline([( "preprocess", preprocessor), ("model", estimator)])
-        score = -cross_val_score(pipeline, X_train, y_train, cv=cv, scoring="neg_mean_absolute_error", n_jobs=1)
-        scores[name] = {"cv_mae_mean": float(score.mean()), "cv_mae_std": float(score.std())}
-    best_name = min(scores, key=lambda name: scores[name]["cv_mae_mean"])
-    print(f"best: {best_name}", flush=True)
-    base = Pipeline([( "preprocess", preprocessor), ("model", models[best_name])])
+        for target_transform in ["raw", "log1p"]:
+            key = f"{name}_{target_transform}"
+            print(f"cv: {key}", flush=True)
+            pipeline = Pipeline([( "preprocess", preprocessor), ("model", estimator)])
+            candidate = pipeline if target_transform == "raw" else TransformedTargetRegressor(
+                regressor=pipeline, func=np.log1p, inverse_func=np.expm1
+            )
+            score = -cross_val_score(candidate, X_train, y_train, cv=cv, scoring="neg_mean_absolute_error", n_jobs=1)
+            scores[key] = {"cv_mae_mean": float(score.mean()), "cv_mae_std": float(score.std())}
+            candidates[key] = candidate
+    best_key = min(scores, key=lambda key: scores[key]["cv_mae_mean"])
+    best_name, target_transform = best_key.rsplit("_", 1)
+    print(f"best: {best_key}", flush=True)
+    base = candidates[best_key]
     grid = {
-        "random_forest": {"model__n_estimators": [30], "model__max_depth": [None]},
+        "random_forest": {"model__n_estimators": [30, 100], "model__max_depth": [None, 20]},
         "gradient_boosting": {"model__n_estimators": [100, 200], "model__learning_rate": [0.05, 0.1]},
         "linear_regression": {},
     }[best_name]
+    if target_transform == "log1p":
+        grid = {f"regressor__{key}": value for key, value in grid.items()}
     search = GridSearchCV(base, grid, cv=cv, scoring="neg_mean_absolute_error", n_jobs=1)
     search.fit(X_train, y_train)
     print("grid complete", flush=True)
@@ -76,7 +86,8 @@ def main() -> None:
     (MODEL_DIR / "options.json").write_text(json.dumps({"brands": sorted(models_by_brand), "models_by_brand": models_by_brand, "seller_types": sorted(df["seller_type"].unique()), "fuel_types": sorted(df["fuel_type"].unique()), "transmission_types": sorted(df["transmission_type"].unique())}, indent=2), encoding="utf-8")
     (MODEL_DIR / "feature_columns.json").write_text(json.dumps(FEATURES, indent=2), encoding="utf-8")
     model_names = {"linear_regression": "Linear Regression", "random_forest": "Random Forest", "gradient_boosting": "Gradient Boosting"}
-    (MODEL_DIR / "model_meta.json").write_text(json.dumps({"model": best_name, "model_name": model_names[best_name], "best_params": search.best_params_, "metrics": metrics, "mae": metrics["mae"], "train_rows": len(X_train), "test_rows": len(X_test), "cv_scores": scores}, indent=2), encoding="utf-8")
+    metadata = {"model": best_name, "model_name": model_names[best_name], "target_transform": target_transform, "best_params": search.best_params_, "metrics": metrics, "mae": metrics["mae"], "train_rows": len(X_train), "test_rows": len(X_test), "cv_scores": scores}
+    (MODEL_DIR / "model_meta.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     print(json.dumps({"model": best_name, "metrics": metrics, "artifacts": [str(MODEL_PATH), str(OUT_DATA), str(MODEL_DIR / "model_meta.json"), str(MODEL_DIR / "feature_columns.json"), str(MODEL_DIR / "options.json")]}, indent=2))
 
 

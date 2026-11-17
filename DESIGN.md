@@ -1,7 +1,7 @@
 # DESIGN.md: Desain Antarmuka
 
 **Produk:** Estimator Harga Mobil Bekas
-**Status:** DRAFT v0.1
+**Status:** Implemented baseline
 **Cakupan:** Landing page (`/`) dan bagian prediksi harga, dengan layout desktop dan mobile.
 
 ---
@@ -69,7 +69,7 @@ Kontras minimal: teks utama di atas `--bg` harus memenuhi WCAG AA (4,5:1). Teks 
 
 ### 2.2 Tipografi
 
-- Font: `Inter` dari Google Fonts, dengan fallback `system-ui, -apple-system, Segoe UI, Roboto, sans-serif`.
+- Font: system font (`system-ui`, `-apple-system`, dan `Segoe UI`); tidak ada font eksternal.
 - Skala: H1 `clamp(2.25rem, 5vw, 3.5rem)`, H2 `2rem`, body `1rem` (16px), label `0.875rem`.
 - Baris: `line-height: 1.6` untuk body, `1.2` untuk heading.
 
@@ -81,7 +81,7 @@ Kontras minimal: teks utama di atas `--bg` harus memenuhi WCAG AA (4,5:1). Teks 
 |---|---|---|
 | Mobile | < 640px | Satu kolom. Menu dalam hamburger. Form satu kolom |
 | Tablet | 640–1023px | Hero satu kolom. Form dua kolom |
-| Desktop | ≥ 1024px | Hero dua kolom. Form dua kolom. Kartu fitur tiga kolom |
+| Desktop | > 800px | Hero dua kolom. Form dua kolom |
 
 Lebar konten maksimum 1200px, dengan padding horizontal 16px (mobile) dan 32px (desktop).
 
@@ -132,7 +132,7 @@ Field dikelompokkan agar mudah diisi:
 
 **Kelompok A: Identitas mobil**
 - Merek (`brand`): dropdown
-- Model (`model`): dropdown, bergantung pada merek yang dipilih (opsional, lihat catatan di 4.3)
+- Model (`model`): dropdown wajib, bergantung pada merek yang dipilih
 
 **Kelompok B: Riwayat pemakaian**
 - Usia kendaraan (`vehicle_age`): input angka, tahun
@@ -194,7 +194,7 @@ Label yang ditampilkan ke pengguna dalam Bahasa Indonesia, tetapi nilai yang dik
 |---|---|
 | Awal | Panel hasil berisi teks "Isi form lalu klik Estimasi Harga" |
 | Loading | Spinner kecil dan tombol disabled |
-| Sukses | Harga utama besar dalam IDR, rentang IDR, kurs INR→IDR, tanggal pembaruan kurs, info model, dan disclaimer |
+| Sukses | Harga utama besar dalam IDR, rentang IDR, info model, dan disclaimer |
 | Error validasi (422) | Pesan di field terkait, panel hasil menampilkan ringkasan "Periksa kembali isian" |
 | Error server (500 / 503) | Kartu merah dengan pesan "Layanan sedang tidak tersedia. Coba lagi beberapa saat." |
 | Gagal jaringan | Kartu merah dengan pesan "Tidak dapat terhubung ke server" dan tombol "Coba lagi" |
@@ -204,7 +204,7 @@ Label yang ditampilkan ke pengguna dalam Bahasa Indonesia, tetapi nilai yang dik
 - Harga dan rentang hasil ditampilkan sebagai Rupiah tanpa pecahan (`Rp40.113.834`) dengan format `id-ID`.
 - Detail nilai kurs dan tanggal pembaruan tetap tersedia di API, tetapi tidak ditampilkan di kartu hasil agar ringkas.
 - API tetap menyimpan harga dan rentang model dalam INR, lalu menambahkan nilai IDR hasil konversi dengan kurs yang sama.
-- Konsumsi BBM dan tenaga ditampilkan dengan satu desimal.
+- Konsumsi BBM dan tenaga mengikuti nilai input dan format browser.
 
 ### 5.3 Penjelasan rentang
 

@@ -3,7 +3,7 @@
 **Produk:** Estimator Harga Mobil Bekas
 **Konteks:** Tugas Besar Praktikum Pembelajaran Mesin, Prodi S1 Sistem Informasi, Universitas Bengkulu
 **Kelompok:** `[NOMOR KELOMPOK]`
-**Status:** DRAFT v0.1
+**Status:** Implemented baseline
 
 ---
 
@@ -62,8 +62,8 @@ Form input, tombol "Estimasi Harga", area hasil, dan area error.
 | F1 | Form input 11 fitur (dropdown dan input angka) | Wajib | Sesuai fitur input di ARCHITECTURE.md |
 | F2 | Validasi input di sisi browser (atribut `required`, `min`, `max`) | Wajib | Validasi utama tetap di backend |
 | F3 | Pengiriman data ke `POST /predict` via Fetch API tanpa reload | Wajib | Panduan: wajib AJAX/Fetch |
-| F4 | Tampilan estimasi harga dalam format rupiah atau INR | Wajib | Lihat catatan mata uang di bagian 8 |
-| F5 | Tampilan rentang estimasi (range low–high) | Wajib | Pengganti "probabilitas" untuk regresi, perlu konfirmasi asisten |
+| F4 | Tampilan estimasi harga dalam Rupiah (IDR) | Wajib | Model menyimpan nilai dasar dalam INR dan API mengembalikan keduanya |
+| F5 | Tampilan rentang estimasi ± MAE | Wajib | Rentang error tipikal, bukan probabilitas atau interval kepercayaan |
 | F6 | Penanganan error: 422, 500, 503, dan gagal jaringan | Wajib | Pesan ramah, bukan respons mentah |
 | F7 | Disclaimer akademik di halaman | Wajib | Sesuai panduan Etika & Responsible Use |
 | F8 | Landing page dengan tautan ke halaman prediksi | Wajib | Sesuai kebutuhan kelompok |
@@ -128,25 +128,25 @@ Target metrik dibiarkan terbuka sampai baseline model selesai. Kriteria kualitat
 - Pipeline berjalan dari awal sampai akhir tanpa error.
 - Tidak ada data leakage (preprocessing di dalam pipeline, split dilakukan sebelum fit).
 - Perbandingan minimal 2–3 algoritma dengan 5-fold CV, dilaporkan dalam tabel.
-- Seluruh 12 test case lulus.
+- Seluruh 13 test API lulus.
 - Repository bisa dijalankan ulang oleh orang lain mengikuti README.
 
-Target angka `[ISI SETELAH BASELINE]`:
-- MAE: `___`
-- RMSE: `___`
-- R²: `___`
+Hasil baseline saat ini:
+- MAE: `108362.81 INR`
+- RMSE: `617818.45 INR`
+- R²: `0.7045`
 
 ---
 
 ## 8. Asumsi dan Batasan
 
 - **Dataset.** Menggunakan `cardekho_dataset.csv` (15.411 baris, 14 kolom termasuk index). Dataset praktikum `student-por.csv` tidak digunakan, sesuai ketentuan.
-- **Mata uang.** Dataset berasal dari pasar India dan harganya dalam **INR (₹)**. Tampilan di web harus menulis `₹`, bukan `Rp`. Mengonversi ke rupiah membutuhkan kurs dan tidak dilakukan pada prototipe ini.
+- **Mata uang.** Dataset berasal dari pasar India dan harganya dalam **INR (₹)**. UI menampilkan IDR menggunakan kurs lokal `backend/exchange_rate.json`; API tetap mengembalikan nilai INR dan IDR.
 - **Periode data.** Data merepresentasikan kondisi pasar pada saat dikumpulkan. Harga pasar berubah, sehingga prediksi tidak berlaku untuk saat ini.
 - **Cakupan data.** Model hanya tahu merek, model, dan atribut yang ada di dataset. Kondisi fisik mobil (kerusakan, cat, riwayat servis), lokasi, dan ketersediaan tidak termasuk.
 - **Outlier.** Data memiliki nilai ekstrem (misalnya jarak tempuh jutaan km dan harga puluhan juta). Keputusan membuang atau mempertahankan dicatat di laporan.
 - **Ketidakseimbangan merek.** Beberapa merek memiliki sampel sangat sedikit (misalnya Ferrari dengan 1 baris), sehingga prediksinya kurang dapat diandalkan.
-- **Rentang estimasi.** Rentang ± MAE dihitung dari data uji. Ini bukan interval kepercayaan statistik dan harus dijelaskan dengan benar di UI.
+- **Rentang estimasi.** Rentang ± MAE dihitung dari data uji. Ini adalah error tipikal, bukan interval kepercayaan statistik.
 
 ---
 
@@ -184,14 +184,14 @@ Tabel ini memastikan setiap butir wajib di panduan memiliki tempat di dokumen.
 | `GET /health`, `POST /predict` | ARCHITECTURE §5 |
 | HTML5, CSS3, JavaScript Fetch | ARCHITECTURE §8, DESIGN |
 | Form tanpa page reload | PRD F3 |
-| Menampilkan prediksi dan probabilitas secara informatif | PRD F4–F5 (rentang untuk regresi, perlu konfirmasi) |
+| Menampilkan prediksi dan ketidakpastian secara informatif | PRD F4–F5 (rentang ± MAE untuk regresi) |
 | Disclaimer Akademik | PRD §9, DESIGN §6 |
 | Alur 6 langkah | HANDOFF §3 |
 | Struktur proyek lokal | ARCHITECTURE §3 |
 | Uvicorn `app:app --reload` | ARCHITECTURE §10 |
 | Metrik regresi MAE, RMSE, R² | ARCHITECTURE §7 |
 | 5-fold CV, GridSearchCV | ARCHITECTURE §7 |
-| 12 test case | HANDOFF §6 |
+| 13 test case | HANDOFF §6 |
 | Laporan: cover, BAB I–V, lampiran | HANDOFF §7 |
 
-Catatan: panduan menulis "probabilitas" untuk hasil, tetapi konsep ini hanya berlaku untuk klasifikasi. Untuk regresi, dokumen ini menggunakan rentang estimasi. **Konfirmasi ke asisten sebelum laporan final.**
+Catatan: regresi tidak menghasilkan probabilitas kelas. Sistem menggunakan rentang ± MAE sebagai error tipikal dan menjelaskannya sebagai bukan interval kepercayaan.
