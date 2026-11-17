@@ -2,15 +2,15 @@
   "model": "random_forest",
   "model_name": "Random Forest",
   "best_params": {
-    "model__max_depth": 20,
-    "model__n_estimators": 150
+    "model__max_depth": null,
+    "model__n_estimators": 30
   },
   "metrics": {
-    "mae": 106758.06228383725,
-    "rmse": 583617.0355718267,
-    "r2": 0.7363260465637711
+    "mae": 109548.03033025227,
+    "rmse": 590963.731383849,
+    "r2": 0.729645895957292
   },
-  "mae": 106758.06228383725,
+  "mae": 109548.03033025227,
   "train_rows": 12192,
   "test_rows": 3048,
   "cv_scores": {
@@ -19,8 +19,8 @@
       "cv_mae_std": 6235.713973508262
     },
     "random_forest": {
-      "cv_mae_mean": 101008.45435928644,
-      "cv_mae_std": 1633.366712647923
+      "cv_mae_mean": 101796.93379835229,
+      "cv_mae_std": 1298.8301550620895
     },
     "gradient_boosting": {
       "cv_mae_mean": 120747.55244880871,
