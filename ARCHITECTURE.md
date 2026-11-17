@@ -58,6 +58,7 @@ car_price_estimator/
 ├── PRD.md                          # Product requirements
 ├── DESIGN.md                       # Desain antarmuka
 ├── HANDOFF.md                      # Pembagian kerja & panduan tim
+├── DATASET.md                      # Sumber dan status lisensi dataset
 ├── DATASET_*.md                    # Catatan dataset (lihat catatan di bawah)
 ├── backend/                        # Server FastAPI
 │   ├── app.py                      # Entry point FastAPI (endpoint, startup load model)
@@ -89,7 +90,7 @@ Catatan struktur:
 - **`models/` dibaca oleh `backend/config.py`** sebagai path relatif terhadap root proyek. Pastikan training menulis ke folder yang sama.
 - **`venv/` dan cache lokal tidak di-commit.** Dataset dan artefak model aktif disimpan agar clone siap dijalankan.
 
-**Catatan dataset.** Dataset yang dipakai adalah `data/cardekho_dataset.csv`, bukan dataset pembelajaran mahasiswa. Lisensi dan izin distribusi dataset tetap perlu dicatat untuk laporan.
+**Catatan dataset.** Dataset yang dipakai adalah `data/cardekho_dataset.csv`, bukan dataset pembelajaran mahasiswa. Sumber Kaggle dan status lisensinya dicatat di `DATASET.md`; lisensi masih perlu dikonfirmasi.
 
 ## 4. Komponen Backend
 
@@ -231,9 +232,11 @@ Evaluasi:
 - Algoritma pembanding: Linear Regression, Random Forest Regressor, dan Gradient Boosting Regressor, masing-masing diuji pada target raw dan `log1p`.
 - Tuning: `GridSearchCV` pada kandidat terbaik; konfigurasi model aktif adalah Random Forest `n_estimators=100`, `max_depth=20` dengan target `log1p`.
 - Metrik: MAE, RMSE, R².
-- Ekspor: `joblib.dump(best_pipeline, "models/model_kelompok_X.joblib")` setelah fit pada split training 80%; metrik dihitung pada holdout 20%.
+- Ekspor: model terbaik dievaluasi pada holdout 20%, lalu di-fit ulang pada seluruh 15.240 baris data bersih sebelum `joblib.dump`. Metrik holdout disimpan terpisah di `models/holdout_metrics.json`.
 
-Baseline aktif: MAE `108362.81 INR`, RMSE `617818.45 INR`, dan R² `0.7045`.
+Perbandingan kandidat raw/log disimpan di `models/model_comparison.csv`. Metrik pada metadata adalah metrik holdout, bukan metrik fit ulang.
+
+KFold dipakai karena target adalah harga kontinu. `StratifiedKFold` tidak dapat menerima target kontinu secara langsung; stratifikasi memerlukan binning target tambahan yang tidak dibutuhkan untuk baseline ini.
 
 ---
 

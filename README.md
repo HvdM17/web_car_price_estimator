@@ -20,6 +20,8 @@ Server juga dapat dijalankan dari folder `backend` dengan `uvicorn app:app --rel
 
 `POST /predict` menerima 11 fitur kendaraan dan mengembalikan harga model dalam INR, hasil konversi IDR, rentang ± MAE, nama model, serta versi artefak. `GET /options` menjadi sumber kategori frontend dan validasi pasangan merek-model.
 
+Training menyimpan perbandingan kandidat di `models/model_comparison.csv` dan metrik holdout di `models/holdout_metrics.json`. Model yang dilayani di-fit ulang pada seluruh data bersih setelah evaluasi holdout.
+
 ## Disclaimer Akademik
 
 Sistem ini adalah prototipe edukatif yang dibuat untuk keperluan Tugas Besar Praktikum Pembelajaran Mesin. Estimasi harga berasal dari model statistik yang dilatih pada data historis dan bukan penilaian profesional, penilaian resmi, atau dasar keputusan jual beli nyata.

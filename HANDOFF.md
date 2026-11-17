@@ -30,8 +30,8 @@ Setiap anggota memiliki satu area utama. Area lain boleh disentuh, tetapi harus 
 | No | Peran | Tanggung jawab utama | File yang dimiliki |
 |---|---|---|---|
 | 1 | **Backend (lead)** | API FastAPI, validasi Pydantic, pemuatan model, penanganan error, `requirements.txt`, test API | `backend/app.py`, `backend/schemas.py`, `backend/config.py`, `tests/test_api.py`, `requirements.txt` |
-| 2 | **Data & EDA** | Eksplorasi data, cleaning, aturan outlier, daftar kategori bersih, data dictionary | `training/01_EDA.ipynb`, `data/cardekho_clean.csv` |
-| 3 | **ML Modeling** | Pipeline, perbandingan algoritma, 5-fold CV, GridSearchCV, export `.joblib` | `training/train.py`, `models/model_kelompok_X.joblib`, `training/02_modelling.ipynb` |
+| 2 | **Data & EDA** | Eksplorasi data, cleaning, aturan outlier, daftar kategori bersih, data dictionary | `training/01_EDA.ipynb`, `data/cardekho_clean.csv`, `DATASET.md` |
+| 3 | **ML Modeling** | Pipeline, perbandingan algoritma raw/log, 5-fold KFold, GridSearchCV, final-fit, export `.joblib` | `training/train.py`, `models/model_kelompok_X.joblib`, `models/model_comparison.csv`, `models/holdout_metrics.json`, `training/02_modelling.ipynb` |
 | 4 | **Frontend Layout** | Landing page, navbar, hero, kartu, responsif, styling | `frontend/index.html`, `frontend/style.css` |
 | 5 | **Frontend Integrasi** | Logika form, validasi browser, Fetch API, render hasil dan error, dropdown dinamis | `frontend/app.js` |
 | 6 | **Dokumentasi & QA** | Test case manual, screenshot, bab laporan, README, koordinasi repo | `ARCHITECTURE.md`, `PRD.md`, `DESIGN.md`, `HANDOFF.md`, `README.md`, `laporan/`, `tests/` |
@@ -127,7 +127,7 @@ Setiap keputusan berikut harus diselesaikan dan dicatat di laporan.
 | D7 | Format tampilan rupiah atau INR (`₹`) | Frontend Layout | IDR di UI; INR dan IDR di API |
 | D8 | "Probabilitas" di panduan untuk regresi: diganti rentang? | Ketua kelompok | ±MAE, bukan probabilitas |
 | D9 | Jumlah anggota: panduan menyebut 5 per kelompok, tim ini 6 orang | Ketua kelompok, konfirmasi asisten | Segera |
-| D10 | Lisensi dataset Kaggle | Dokumentasi & QA | Sebelum laporan |
+| D10 | Lisensi dataset dan sumber asli | Dokumentasi & QA | Belum terverifikasi; catat di laporan |
 | D11 | Persetujuan dataset dari Asisten Praktikum | Ketua kelompok | Segera |
 | D12 | Rentang validasi final (`ge`/`le`) | Backend & Data & EDA | Sebelum kontrak API dikunci |
 
@@ -165,7 +165,7 @@ Laporan dikerjakan setelah sistem berjalan. Struktur mengikuti panduan Bagian E:
 3. BAB I Pendahuluan: latar belakang, rincian dataset, tujuan.
 4. BAB II Metodologi dan pemodelan: preprocessing, split, tabel metrik, hyperparameter terbaik, bukti export dan impor joblib.
 5. BAB III Arsitektur dan implementasi: diagram dari ARCHITECTURE §2, potongan kode `app.py`, `schemas.py`, dan `app.js`.
-6. BAB IV Pengujian: tabel TC01–TC12, screenshot desktop dan mobile, screenshot prediksi sukses dan error.
+6. BAB IV Pengujian: tabel TC01–TC13, screenshot desktop dan mobile, screenshot prediksi sukses dan error.
 7. BAB V Kesimpulan dan ethical use: ringkasan, keterbatasan dataset dan model, disclaimer.
 8. Lampiran: tautan repository GitHub yang memuat source code, `.joblib`, dan `requirements.txt`.
 

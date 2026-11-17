@@ -9,11 +9,17 @@
   "metrics": {
     "mae": 108362.813902437,
     "rmse": 617818.4497137,
-    "r2": 0.7045166208308079
+    "r2": 0.7045166208308079,
+    "train_rows": 12192,
+    "test_rows": 3048,
+    "random_state": 42
   },
   "mae": 108362.813902437,
-  "train_rows": 12192,
-  "test_rows": 3048,
+  "evaluation_train_rows": 12192,
+  "evaluation_test_rows": 3048,
+  "final_fit_rows": 15240,
+  "holdout_metrics_file": "holdout_metrics.json",
+  "model_comparison_file": "model_comparison.csv",
   "cv_scores": {
     "linear_regression_raw": {
       "cv_mae_mean": 177882.65861273961,

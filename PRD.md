@@ -140,7 +140,7 @@ Hasil baseline saat ini:
 
 ## 8. Asumsi dan Batasan
 
-- **Dataset.** Menggunakan `cardekho_dataset.csv` (15.411 baris, 14 kolom termasuk index). Dataset praktikum `student-por.csv` tidak digunakan, sesuai ketentuan.
+- **Dataset.** Menggunakan `cardekho_dataset.csv` (15.411 baris mentah, 15.240 baris setelah cleaning, 14 kolom termasuk index). Dataset praktikum `student-por.csv` tidak digunakan. Sumber dan status lisensi dicatat di `DATASET.md`; lisensi belum terverifikasi.
 - **Mata uang.** Dataset berasal dari pasar India dan harganya dalam **INR (₹)**. UI menampilkan IDR menggunakan kurs lokal `backend/exchange_rate.json`; API tetap mengembalikan nilai INR dan IDR.
 - **Periode data.** Data merepresentasikan kondisi pasar pada saat dikumpulkan. Harga pasar berubah, sehingga prediksi tidak berlaku untuk saat ini.
 - **Cakupan data.** Model hanya tahu merek, model, dan atribut yang ada di dataset. Kondisi fisik mobil (kerusakan, cat, riwayat servis), lokasi, dan ketersediaan tidak termasuk.

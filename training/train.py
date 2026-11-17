@@ -7,6 +7,7 @@ import joblib
 import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer, TransformedTargetRegressor
+from sklearn.base import clone
 from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
@@ -19,6 +20,8 @@ DATA_PATH = ROOT / "data" / "cardekho_dataset.csv"
 OUT_DATA = ROOT / "data" / "cardekho_clean.csv"
 MODEL_DIR = ROOT / "models"
 MODEL_PATH = MODEL_DIR / "model_kelompok_X.joblib"
+HOLDOUT_METRICS_PATH = MODEL_DIR / "holdout_metrics.json"
+MODEL_COMPARISON_PATH = MODEL_DIR / "model_comparison.csv"
 FEATURES = ["brand", "model", "vehicle_age", "km_driven", "seller_type", "fuel_type", "transmission_type", "mileage", "engine", "max_power", "seats"]
 NUMERIC = ["vehicle_age", "km_driven", "mileage", "engine", "max_power", "seats"]
 CATEGORICAL = ["brand", "model", "seller_type", "fuel_type", "transmission_type"]
@@ -80,15 +83,42 @@ def main() -> None:
     print("grid complete", flush=True)
     model = search.best_estimator_
     prediction = model.predict(X_test)
-    metrics = {"mae": float(mean_absolute_error(y_test, prediction)), "rmse": float(np.sqrt(mean_squared_error(y_test, prediction))), "r2": float(r2_score(y_test, prediction))}
-    joblib.dump(model, MODEL_PATH, compress=3)
+    holdout_metrics = {
+        "mae": float(mean_absolute_error(y_test, prediction)),
+        "rmse": float(np.sqrt(mean_squared_error(y_test, prediction))),
+        "r2": float(r2_score(y_test, prediction)),
+        "train_rows": len(X_train),
+        "test_rows": len(X_test),
+        "random_state": 42,
+    }
+    final_model = clone(model).fit(X, y)
+    joblib.dump(final_model, MODEL_PATH, compress=3)
+    HOLDOUT_METRICS_PATH.write_text(json.dumps(holdout_metrics, indent=2), encoding="utf-8")
+    comparison = [
+        {"candidate": key, **value}
+        for key, value in scores.items()
+    ]
+    pd.DataFrame(comparison).sort_values("cv_mae_mean").to_csv(MODEL_COMPARISON_PATH, index=False)
     models_by_brand = {brand: sorted(group["model"].unique().tolist()) for brand, group in df.groupby("brand")}
     (MODEL_DIR / "options.json").write_text(json.dumps({"brands": sorted(models_by_brand), "models_by_brand": models_by_brand, "seller_types": sorted(df["seller_type"].unique()), "fuel_types": sorted(df["fuel_type"].unique()), "transmission_types": sorted(df["transmission_type"].unique())}, indent=2), encoding="utf-8")
     (MODEL_DIR / "feature_columns.json").write_text(json.dumps(FEATURES, indent=2), encoding="utf-8")
     model_names = {"linear_regression": "Linear Regression", "random_forest": "Random Forest", "gradient_boosting": "Gradient Boosting"}
-    metadata = {"model": best_name, "model_name": model_names[best_name], "target_transform": target_transform, "best_params": search.best_params_, "metrics": metrics, "mae": metrics["mae"], "train_rows": len(X_train), "test_rows": len(X_test), "cv_scores": scores}
+    metadata = {
+        "model": best_name,
+        "model_name": model_names[best_name],
+        "target_transform": target_transform,
+        "best_params": search.best_params_,
+        "metrics": holdout_metrics,
+        "mae": holdout_metrics["mae"],
+        "evaluation_train_rows": len(X_train),
+        "evaluation_test_rows": len(X_test),
+        "final_fit_rows": len(X),
+        "holdout_metrics_file": HOLDOUT_METRICS_PATH.name,
+        "model_comparison_file": MODEL_COMPARISON_PATH.name,
+        "cv_scores": scores,
+    }
     (MODEL_DIR / "model_meta.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
-    print(json.dumps({"model": best_name, "metrics": metrics, "artifacts": [str(MODEL_PATH), str(OUT_DATA), str(MODEL_DIR / "model_meta.json"), str(MODEL_DIR / "feature_columns.json"), str(MODEL_DIR / "options.json")]}, indent=2))
+    print(json.dumps({"model": best_name, "metrics": holdout_metrics, "artifacts": [str(MODEL_PATH), str(OUT_DATA), str(MODEL_DIR / "model_meta.json"), str(HOLDOUT_METRICS_PATH), str(MODEL_COMPARISON_PATH), str(MODEL_DIR / "feature_columns.json"), str(MODEL_DIR / "options.json")]}, indent=2))
 
 
 if __name__ == "__main__":
